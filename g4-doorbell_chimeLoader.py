@@ -41,26 +41,49 @@ if bool(args.Address) and bool(args.Username) and bool(args.Password) and bool(a
 else:
     ipAddress = input(ipPrompt + "\n")
     username = input("\n" + userPrompt + "\n")
+    if username == "":
+        username = "ubnt"
     password = getpass.getpass("\n" + passPrompt + "\n")
     file = input("\n" + filePrompt + "\n")
 
 #Function that checks for existing file
 #Returns bool
-def checkConfig(givenIP, givenUsername, givenPassword, givenFile):
-    pass
+def CheckConfig(givenIP, givenUsername, givenPassword, givenFile):
+    #Device configuration
+    device = {
+        'device_type': 'linux',
+        'ip': givenIP,
+        'username': givenUsername,
+        'password': givenPassword
+    }
 
-def setConfig(givenIP, givenUsername, givenPassword, givenFile):
+    #Connect to host
+    try:
+        print("\n> Connecting to host " + givenIP)
+        net_connect = ConnectHandler(**device)
+        output = net_connect.send_command("ls | grep " + file)
+        if output == file:
+            return True
+        else:
+            return False
+    except(NetMikoTimeoutException):
+        print("\n> Timeout connecting to " + givenIP)
+        print("\nExiting...")
+        exit()
+
+def SendFile(givenIP, givenUsername, givenPassword, givenFile):
     pass
 
 
 #Run 'checkConfig' function to check for file
 #If it returns a true boolean, run 'setConfig'
 #If it returns false, print message to terminal
-if bool(checkConfig(ipAddress, username, password, file)):
-    #Copy file to doorbell
-    setConfig(ipAddress, username, password, file)
-else:
+if bool(CheckConfig(ipAddress, username, password, file)):
     #Tell user the doorbell is all set
     print("The doorbell already has the given file, exiting...")
     #Exit gracefully
     exit()
+else:
+    #Copy file to doorbell
+    print("Sending file")
+    # SendFile(ipAddress, username, password, file)
