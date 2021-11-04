@@ -1,0 +1,66 @@
+# unifi-g4_chimeLoader.py
+# Checks for existing uploaded files to doorbell. If they don't exist, upload them
+#############################################
+#                                           #
+#     NOTE: This script is not complete     #
+# It should not be used, as it does nothing #
+#    Initial commit used to back up work    #
+#                                           #
+#############################################
+
+#Imports
+from netmiko import ConnectHandler
+from netmiko.ssh_exception import NetMikoTimeoutException
+import argparse
+import getpass
+
+#Initialize argument parser
+parser = argparse.ArgumentParser(description="Checks if custom chime is on given doorbell IP address, and uploads if necessary.")
+
+#Help prompts
+ipPrompt = "Set IP address to log in to"
+userPrompt = "Set username to log in with (Default: ubnt)"
+passPrompt = "Set password to log in with"
+filePrompt = "WAV file to upload to doorbell. Specifications can be found in README.md"
+
+#Add optional arguments
+parser.add_argument("-a", "--Address", help = ipPrompt)
+parser.add_argument("-u", "--Username", help = userPrompt)
+parser.add_argument("-p", "--Password", help = passPrompt)
+parser.add_argument("-f" , "--File", help = filePrompt)
+
+#Read arguments from command line
+args = parser.parse_args()
+
+#If read arguments contain information, use those
+if bool(args.Address) and bool(args.Username) and bool(args.Password) and bool(args.File):
+    ipAddress = args.Address
+    username = args.Username
+    password = args.Password
+    file = args.File
+else:
+    ipAddress = input(ipPrompt + "\n")
+    username = input("\n" + userPrompt + "\n")
+    password = getpass.getpass("\n" + passPrompt + "\n")
+    file = input("\n" + filePrompt + "\n")
+
+#Function that checks for existing file
+#Returns bool
+def checkConfig(givenIP, givenUsername, givenPassword, givenFile):
+    pass
+
+def setConfig(givenIP, givenUsername, givenPassword, givenFile):
+    pass
+
+
+#Run 'checkConfig' function to check for file
+#If it returns a true boolean, run 'setConfig'
+#If it returns false, print message to terminal
+if bool(checkConfig(ipAddress, username, password, file)):
+    #Copy file to doorbell
+    setConfig(ipAddress, username, password, file)
+else:
+    #Tell user the doorbell is all set
+    print("The doorbell already has the given file, exiting...")
+    #Exit gracefully
+    exit()
