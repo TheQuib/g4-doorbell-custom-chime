@@ -9,7 +9,7 @@
 #############################################
 
 #Imports
-from netmiko import ConnectHandler
+from netmiko import ConnectHandler, SCPConn
 from netmiko.ssh_exception import NetMikoTimeoutException
 import argparse
 import getpass
@@ -62,6 +62,7 @@ def CheckConfig(givenIP, givenUsername, givenPassword, givenFile):
         print("\n> Connecting to host " + givenIP)
         net_connect = ConnectHandler(**device)
         output = net_connect.send_command("ls | grep " + file)
+        net_connect.disconnect()
         if output == file:
             return True
         else:
@@ -72,7 +73,19 @@ def CheckConfig(givenIP, givenUsername, givenPassword, givenFile):
         exit()
 
 def SendFile(givenIP, givenUsername, givenPassword, givenFile):
-    pass
+    #Device configuration
+    device = {
+        'device_type': 'linux',
+        'ip': givenIP,
+        'username': givenUsername,
+        'password': givenPassword
+    }
+    #THIS IS ALL EXPERIMENTAL, NOT TESTED
+    net_connect = ConnectHandler(**device)
+    scp_conn = SCPConn(net_connect)
+    scp_conn.scp_transfer_file(file, file)
+    net_connect.disconnect()
+
 
 
 #Run 'checkConfig' function to check for file
