@@ -53,8 +53,6 @@ def CheckConfig(givenIP, givenUsername, givenPassword, givenFile):
     #Connect to host
     try:
         print("Checking for file...\n")
-
-        print("\n> Connecting to host " + givenIP)
         net_connect = ConnectHandler(**device)
         output = net_connect.send_command("ls | grep " + file)
 
