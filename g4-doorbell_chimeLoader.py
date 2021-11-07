@@ -1,12 +1,5 @@
 # unifi-g4_chimeLoader.py
 # Checks for existing uploaded files to doorbell. If they don't exist, upload them
-#############################################
-#                                           #
-#     NOTE: This script is not complete     #
-# It should not be used, as it does nothing #
-#    Initial commit used to back up work    #
-#                                           #
-#############################################
 
 #Imports
 from netmiko import ConnectHandler, SCPConn
@@ -59,14 +52,18 @@ def CheckConfig(givenIP, givenUsername, givenPassword, givenFile):
 
     #Connect to host
     try:
+        print("Checking for file...\n")
+
         print("\n> Connecting to host " + givenIP)
         net_connect = ConnectHandler(**device)
         output = net_connect.send_command("ls | grep " + file)
+
         net_connect.disconnect()
         if output == file:
             return True
         else:
             return False
+
     except(NetMikoTimeoutException):
         print("\n> Timeout connecting to " + givenIP)
         print("\nExiting...")
@@ -80,13 +77,30 @@ def SendFile(givenIP, givenUsername, givenPassword, givenFile):
         'username': givenUsername,
         'password': givenPassword
     }
-    #THIS IS ALL EXPERIMENTAL, NOT TESTED
-    net_connect = ConnectHandler(**device)
-    scp_conn = SCPConn(net_connect)
-    scp_conn.scp_transfer_file(file, file)
-    net_connect.disconnect()
 
+    try:
+        print("\n> Connecting to host " + givenIP)
+        net_connect = ConnectHandler(**device)
+        scp_conn = SCPConn(net_connect)
 
+        #Transfer file to default directory of /etc/persistent
+        print("\n> Transferring file to host " + givenIP)
+        scp_conn.scp_transfer_file(file, file)
+
+        #Create backup of existing chime.wav file
+        print("\n> Creating backup of /etc/sounds/chime.wav")
+        net_connect.send_command("mv /etc/sounds/chime.wav /etc/sounds/chime.wav.bak")
+
+        #Create symlink of uploaded file to /etc/sounds/chime.wav
+        print("\n> Creating symlink of uploaded file to /etc/sounds/chime.wav")
+        net_connect.send_command("ln -s /etc/persistent/" + file + " /etc/sounds/chime.wav")
+
+        print("\n> All done! Disconnecting...")
+        net_connect.disconnect()
+    except(NetMikoTimeoutException):
+        print("\n> Timeout connecting to " + givenIP)
+        print("\nExiting...")
+        exit()
 
 #Run 'checkConfig' function to check for file
 #If it returns a true boolean, run 'setConfig'
@@ -98,5 +112,4 @@ if bool(CheckConfig(ipAddress, username, password, file)):
     exit()
 else:
     #Copy file to doorbell
-    print("Sending file")
-    # SendFile(ipAddress, username, password, file)
+    SendFile(ipAddress, username, password, file)
