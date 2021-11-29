@@ -28,4 +28,4 @@ I prefer this method so I can automate a pull from GitHub and just run the scrip
 <br>
 
 ### Tl;dr
-Each script uses `argparse` to accpet command-line arguments. If you don't give it arguments, you can just run the script and it will prompt you for the required variables.
+Each script uses `argparse` to accept command-line arguments. If you don't give it arguments, you can just run the script and it will prompt you for the required variables.
