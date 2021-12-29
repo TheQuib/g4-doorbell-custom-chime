@@ -11,9 +11,9 @@ import getpass
 parser = argparse.ArgumentParser(description="Checks if custom chime is on given doorbell IP address, and uploads if necessary.")
 
 #Help prompts
-ipPrompt = "Set IP address to log in to"
-userPrompt = "Set username to log in with (Default: ubnt)"
-passPrompt = "Set password to log in with"
+ipPrompt = "Set IP address to authenticate to"
+userPrompt = "Set username to authenticate with (Default: ubnt)"
+passPrompt = "Set password to authenticate with"
 filePrompt = "WAV file to upload to doorbell. Specifications can be found in README.md"
 resetPrompt = "Reset doorbell chime settings back to default"
 

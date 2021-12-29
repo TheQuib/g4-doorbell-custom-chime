@@ -23,7 +23,21 @@ This script can be run without command-line arguments by just running `pythonScr
 
 <br>
 
-I prefer this method so I can automate a pull from GitHub and just run the script with the desired arguments without having to touch the script after a pull.
+Current acceptable flags and arguments supported are:
+  - -a, --Address
+    - IP Address of doorbell to connect to
+  - -u, --Username
+    - Username to authenticate with (Default: ubnt)
+  - -p, --Password
+    - Password to authenticate with
+  - -f, --File
+    - WAV file to upload to doorbell, specifications can be found in [Requirements](#requriements)
+  - -r, --Reset
+    - Reset doorbell chime settings back to default
+
+<br>
+
+The `-r` or `--Reset` flag can be given to reset
 
 <br>
 
