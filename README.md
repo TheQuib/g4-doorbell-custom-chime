@@ -31,7 +31,7 @@ Current acceptable flags and arguments supported are:
   - -p, --Password
     - Password to authenticate with
   - -f, --File
-    - WAV file to upload to doorbell, specifications can be found in [Requirements](#requriements)
+    - WAV file to upload to doorbell, specifications can be found in [Requirements](#requirements)
   - -r, --Reset
     - Reset doorbell chime settings back to default
 
