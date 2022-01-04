@@ -77,7 +77,7 @@ def CheckConfig(givenIP, givenUsername, givenPassword, givenFile):
         print("\n> Error authenticating to " + givenIP)
         print("\nExiting...")
         exit()
-    except():
+    except:
         print("\n> General error...")
         print("\nExiting...")
         exit()
@@ -119,7 +119,7 @@ def SendFile(givenIP, givenUsername, givenPassword, givenFile):
         print("\n> Error authenticating to " + givenIP)
         print("\nExiting...")
         exit()
-    except():
+    except:
         print("\n> General error...")
         print("\nExiting...")
         exit()
@@ -154,7 +154,7 @@ def ResetConfig(givenIP, givenUsername, givenPassword):
         print("\n> Error authenticating to " + givenIP)
         print("\nExiting...")
         exit()
-    except():
+    except:
         print("\n> General error...")
         print("\nExiting...")
         exit()
