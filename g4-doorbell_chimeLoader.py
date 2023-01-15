@@ -3,7 +3,7 @@
 
 #Imports
 from netmiko import ConnectHandler, SCPConn
-from netmiko.ssh_exception import NetMikoTimeoutException, NetMikoAuthenticationException
+from netmiko.exceptions import NetMikoTimeoutException, NetMikoAuthenticationException
 import argparse
 import getpass
 
